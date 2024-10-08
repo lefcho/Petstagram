@@ -4,6 +4,12 @@ from Petstagram.photos.models import Photo
 
 
 class Comment(models.Model):
+    class Meta:
+        indexes = [
+            models.Index(fields=('date_time_of_publication', ))
+        ]
+        ordering = ['-date_time_of_publication']
+
     text = models.CharField(
         max_length=300,
     )
