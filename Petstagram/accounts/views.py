@@ -12,7 +12,7 @@ UserModel = get_user_model()
 class AppUserRegisterView(CreateView):
     template_name = 'accounts/register-page.html'
     model = UserModel
-    success_url = reverse_lazy('profile-details')
+    success_url = reverse_lazy('index')
     form_class = AppUserCreationForm
 
     def form_valid(self, form):

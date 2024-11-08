@@ -11,7 +11,7 @@
                 <h1>Petstagram</h1>
 
                 <!-- Start Register Form -->
-                <form action="">
+                <form method="post">
                     {% csrf_token %}
                     
                     {{ form.email|placeholder:'Email' }}
@@ -32,7 +32,7 @@
             <div class="second-option">
 
                 <!-- Link to Login Page -->
-                <p>Have an account? <a href="#">Log in</a></p>
+                <p>Have an account? <a href="{% url 'login' %}">Log in</a></p>
             </div>
         </div>
         <!-- End Register Section -->
