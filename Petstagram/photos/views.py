@@ -8,7 +8,10 @@ def add_photo(request):
     form = AddPhotoForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
-        form.save()
+        photo = form.save(commit=False)
+        photo.user = request.user
+        photo.save()
+
         return redirect('index')
 
     context = {

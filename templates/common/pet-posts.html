@@ -9,18 +9,20 @@
                 <div class="profilepic">
                     <div class="profile_img">
                         <div class="image">
-                            <img src="{% static 'images/person.png' %}" alt="img8">
+                            {% if photo.user.profile.profile_picture %}
+                                <img src="{{ photo.user.profile.profile_picture }}" alt="Profile Image">
+                            {% else %}
+                                <img src="{% static 'images/person.png' %}" alt="img8">
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </a>
             <h3>
                 <!-- Link to User Profile Page -->
-                <a href="#">
+                <a href="{% url 'profile-details' photo.user.pk %}">
                     <!-- if user has first name and last name -->
-                    Diyan Kalaydzhiev
-                    <!-- else -->
-                    <!-- show user username -->
+                    {{ photo.user.profile.get_profile_name }}
                 </a>
                 <br>
                 <!-- if the photo has location -->
@@ -48,7 +50,7 @@
                     <!-- if user has liked the photo -->
                     {% if photo.likes.all %}
                         <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
-                    <!-- else -->
+                        <!-- else -->
                     {% else %}
                         <i class="fa-regular fa-heart"></i>
                     {% endif %}
@@ -73,13 +75,13 @@
         <!-- Start Tagged Pets -->
         <!-- Link to First Tagged Pet Details Page-->
         {% for pet in photo.tagged_pets.all %}
-        <a href="{% url 'details_pet' "username" pet.slug %}">
-            <p class="message">
-                <b>{{ pet.name }}</b>
-            </p>
-        </a>
+            <a href="{% url 'details_pet' pet.user.profile.get_profile_name|lower pet.slug %}">
+                <p class="message">
+                    <b>{{ pet.name }}</b>
+                </p>
+            </a>
         {% endfor %}
-        
+
         <!-- End Tagged Pets -->
 
         <!-- Link to Photo Details Page -->
