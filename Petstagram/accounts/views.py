@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 
 from Petstagram.accounts.forms import AppUserCreationForm, ProfileEditForm
+from Petstagram.photos.models import Photo
 
 UserModel = get_user_model()
 
@@ -36,6 +37,10 @@ class AppUserDetailsView(DetailView):
 
         context['total_likes_count'] = sum(p.likes.count() for p in self.object.photos.all())
 
+        context['user_photos'] = (Photo.objects.
+                                  filter(user_id=self.object.pk).
+                                  order_by('-date_of_publication'))
+
         return context
 
 
@@ -56,5 +61,15 @@ class ProfileEditView(UpdateView):
         )
 
 
-def delete_profile(request):
-    return render(request, 'accounts/profile-delete-page.html')
+class AppUserDeleteView(DeleteView):
+    model = UserModel
+    template_name = 'accounts/profile-delete-page.html'
+    success_url = reverse_lazy('login')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def delete(self, request, *args, **kwargs):
+        user = self.get_object()
+        user.delete()
+        return redirect(self.get_success_url())
