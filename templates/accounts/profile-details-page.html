@@ -18,7 +18,7 @@
           <div class="personal">
             <div class="edit">
               <!-- User Username -->
-              <p>{{ photo.user.profile.get_full_name }}</p>
+              <p>{{ photo.user.profile.get_profile_name }}</p>
 
               <!-- IF the viewer is the owner of the profile -->
               <!-- Link to Edit Profile Page -->
@@ -32,7 +32,7 @@
                   </a>
     
                   <!-- Link to Delete Profile Page -->
-                  <a href="">
+                  <a href="{% url 'profile-delete' request.user.pk %}">
                     <img
                       class="bin-img"
                       src="{% static 'images/icon-remove-22.jpg' %}"
@@ -56,7 +56,7 @@
               <p>likes</p>
             </div>
             <!-- User First and Last Name IF Added -->
-            <h3 class="names">{{ object.profile.get_full_name }}</h3>
+            <h3 class="names">{{ object.profile.get_profile_name }}</h3>
 
             <!-- User Email Address -->
             <p class="email">{{ object.email }}</p>
@@ -67,8 +67,8 @@
         <!-- Start Pets Data Section -->
         <div class="pets">
           <div class="statuses">
-            {% for pet in object.pet_set.all %}
-                <a href="{% url 'pet-details' object.profile.get_full_name pet.slug %}">
+            {% for pet in object.pets.all %}
+                <a href="{% url 'details_pet' object.profile.get_profile_name pet.slug %}">
                   <div class="head-pet">
                     <div class="status">
                       <div class="image">
@@ -92,8 +92,8 @@
         <!-- Start Last Uploaded Photos Section -->
         <div class="pet-photos">
           <!-- Link to Last Uploaded Pet Photo -->
-        {% for photo in object.photo_set.all %}
-          <a href="{% url 'photo-details' photo.pk %}">
+        {% for photo in object.photos.all %}
+          <a href="{% url 'details_photo' photo.pk %}">
             <!-- Pet Photo -->
             <img
               src="{{ photo.photo.url }}"

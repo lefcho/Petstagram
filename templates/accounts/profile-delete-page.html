@@ -11,6 +11,7 @@
             </h1>
             <form method="post" action="{% url 'profile-delete' request.user.pk %}">
                 <div class="sure-buttons">
+                    {% csrf_token %}
                     <!-- Yes (Delete Profile) Button -->
                     <button>Yes</button>
                     <!-- Go Back Button -->

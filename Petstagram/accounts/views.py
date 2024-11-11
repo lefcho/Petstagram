@@ -36,7 +36,8 @@ class AppUserDetailsView(DetailView):
         context = super().get_context_data(**kwargs)
 
         context['total_likes_count'] = sum(p.likes.count() for p in self.object.photos.all())
-
+        context['total_pets_count'] = self.object.pets.count()
+        context['total_photos_count'] = self.object.photos.count()
         context['user_photos'] = (Photo.objects.
                                   filter(user_id=self.object.pk).
                                   order_by('-date_of_publication'))
